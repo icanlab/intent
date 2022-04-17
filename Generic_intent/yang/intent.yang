@@ -1,0 +1,180 @@
+//-------------------------------------------------------------------------------------
+// Copyright (c) 2021-2022
+//-------------------------------------------------------------------------------------
+module intent {
+    namespace "urn:seuicanlab:intent";
+    prefix "intent";
+
+    import intent-types { prefix types;}
+    import intent-objects { prefix objects; }
+    import intent-actions { prefix actions; }
+    import intent-conditions { prefix conditions; }
+    import intent-constraints { prefix constraints; }
+    import intent-states { prefix states; }
+
+    revision 2021-08-22 {
+        description "Initial revision";
+    }
+
+    grouping intent {
+        description "An intent specifies two objects and a list of actions that specific
+                the desired connectivity state between those objects.";
+        list objects {
+            key "order";
+            leaf order {
+                type uint8;
+            }
+
+            choice object {
+                case end-point-selector {
+                    container end-point-selector {
+                        uses objects:end-point-selector;
+                    }
+                }
+                case end-point-group-selector {
+                    container end-point-group-selector {
+                        uses objects:end-point-group-selector;
+                    }
+                }
+                case end-point-group {
+                    container end-point-group {
+                        uses objects:end-point-group;
+                    }
+                }
+            }
+
+            max-elements 2;
+            description "List of objects that are part of the intent request. There
+                        is an implicit many to many connection between all objects selected.";
+        }
+        list actions {
+            key "order";
+            leaf order {
+                type uint8;
+            }
+            choice action {
+                case allow {
+                    container allow {
+                        uses actions:allow;
+                    }
+                }
+                case block {
+                    container block {
+                        uses actions:block;
+                    }
+                }
+                case redirect {
+                    container redirect {
+                        uses actions:redirect;
+                    }
+                }
+                case mirror {
+                    container mirror {
+                        uses actions:mirror;
+                    }
+                }
+                case log {
+                    container log {
+                        uses actions:log;
+                    }
+                }
+            }
+
+            description "List of action references to apply to the connections between
+                        the objects.";
+        }
+
+        list qos-config {
+            key "order";
+            leaf order {
+                type uint8;
+            }
+            choice qos {
+                case dscp-type {
+                    container dscp-type {
+                        uses qos-config:dscp-type;
+                    }
+                }
+            }
+            description "List of configuration to apply to the QoS Configuration.";
+        }
+
+        list constraints {
+            key "order";
+            leaf order {
+                type uint8;
+            }
+            choice constraints {
+                case include-node {
+                    container include-node {
+                        uses constraints:include-node;
+                    }
+                }
+                case exclude-node {
+                    container exclude-node {
+                        uses constraints:exclude-node;
+                    }
+                }
+                case bandwidth-constraint {
+                    container bandwidth-constraint {
+                        uses constraints:bandwidth-constraint;
+                    }
+                }
+                case protection-constraint {
+                    container protection-constraint {
+                        uses constraints:protection-constraint;
+                    }
+                }
+                case failover-constraint {
+                    container failover-constraint {
+                        uses constraints:failover-constraint;
+                    }
+                }
+                case classification-constraint {
+                    container classification-constraint {
+                        uses constraints:classification-constraint;
+                    }
+                }
+                case qos-constraint {
+                    container qos-constraint {
+                        uses constraints:qos-constraint;
+                    }
+                }
+            }
+            description "List of additional constraints to apply to the when implementing
+                        the intent.";
+        }
+
+        list conditions {
+            key "order";
+            leaf order {
+                type uint8;
+            }
+            choice condition {
+                case scheduled {
+                    container scheduled {
+                        uses conditions:scheduled;
+                    }
+                }
+                case weekly {
+                    container weekly {
+                        uses conditions:weekly;
+                    }
+                }
+                case daily {
+                    container daily {
+                        uses conditions:daily;
+                    }
+                }
+            }
+            description "List of conditions when this intent will be applied.";
+        }
+    }
+
+    container intents {
+        list intent {
+            key "id";
+            uses intent;
+        }
+    }
+}

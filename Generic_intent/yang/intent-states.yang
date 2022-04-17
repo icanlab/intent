@@ -1,0 +1,34 @@
+//-------------------------------------------------------------------------------------
+// Copyright (c) 2021-2022
+//-------------------------------------------------------------------------------------
+module intent-states {
+    namespace "urn:icanlab:intent:states";
+    prefix "intent-states";
+
+    revision 2021-08-22 {
+        description "Initial revision";
+    }
+
+    grouping state {
+        description "The state (verb) of what is to be performed by this intent.";
+    }
+
+    grouping expect {
+        uses state;
+        description "Indicates state is expected.";
+    }
+
+    grouping avoid {
+        uses state;
+        description "Indicates state is avoided";
+    }
+
+    grouping template_state {
+        uses state;
+        description "";
+        leaf state-ID {
+            type string;
+            description "user define state.";
+        }
+    }
+}

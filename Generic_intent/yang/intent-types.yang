@@ -1,0 +1,19 @@
+//-------------------------------------------------------------------------------------
+// Copyright (c) 2021-2022
+//-------------------------------------------------------------------------------------
+module intent-types {
+    namespace "urn:icanlab:intent:types";
+    prefix "intent-types";
+
+    revision 2021-08-22{
+        description "Initial revision";
+    }
+
+    // This should be pulled from yang-types, but for some reason that was
+    // not working, so here is a definition.
+    typedef uuid {
+        type string {
+            pattern "([0-9a-fA-F]{8})-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}";
+        }
+    }
+}

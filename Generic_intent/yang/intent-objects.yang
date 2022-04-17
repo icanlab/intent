@@ -1,0 +1,64 @@
+//-------------------------------------------------------------------------------------
+// Copyright (c) 2021-2022
+//-------------------------------------------------------------------------------------
+module intent-objects {
+    namespace "urn:icanlab:intent:objects";
+    prefix "intent-objects";
+
+    import intent-types { prefix types; }
+
+    revision 2021-08-22 {
+        description "Initial revision";
+    }
+
+    grouping object {
+        description "A object (what) on which the intent will have to be applied.";
+    }
+
+    grouping end-point-selector {
+      uses object;
+
+      leaf end-point-selector {
+        type string;
+      }
+
+      description "Selects a list of end points to be included in the
+          object based on a (yet to be defined) selection syntax
+          (think jQuery-like).";
+    }
+
+    grouping end-point-group-selector {
+      uses object;
+
+      leaf end-point-group-selector {
+        type string;
+      }
+
+      description "Selects a list of end point groups to be included in the
+          object based on a (yet to be defined) selection syntax.";
+    }
+
+    grouping end-point-group {
+      uses object;
+
+      leaf name {
+        type string;
+      }
+
+      description "Select a specifically defined end point group.";
+    }
+
+    container end-point-groups {
+      list end-point-group {
+        key "id";
+        leaf id {
+          type types:uuid;
+        }
+        choice selector {
+          case end-point-selector {
+            uses end-point-selector;
+          }
+        }
+      }
+    }
+}

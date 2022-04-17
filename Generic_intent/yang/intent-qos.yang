@@ -1,0 +1,33 @@
+//-------------------------------------------------------------------------------------
+// Copyright (c) 2021-2022
+//-------------------------------------------------------------------------------------
+module intent-qos {
+    namespace "urn:icanlab:intent:qos";
+    prefix "intent-qos";
+
+    import ietf-inet-types {
+        prefix inet;
+        revision-date 2013-07-15;
+    }
+
+    revision 2021-08-22 {
+        description "Initial revision";
+    }
+
+    // Configuring the QoS attribute mapping.
+    // Configure type: DSCP
+    // Contains DSCP Value and QoS Profile name.
+
+    grouping dscp-type {
+
+      leaf name {
+        type string;
+      }
+
+      leaf dscp {
+        type inet:dscp;
+        default 0;
+      }
+      description "Represents a DSCP configuration.";
+    }
+}

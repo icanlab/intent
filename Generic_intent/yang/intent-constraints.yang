@@ -1,0 +1,103 @@
+//-------------------------------------------------------------------------------------
+// Copyright (c) 2021-2022
+//-------------------------------------------------------------------------------------
+module intent-constraints {
+    namespace "urn:icanlab:intent:constraints";
+    prefix "intent-constraints";
+
+    revision 2021-08-22 {
+        description "Initial revision";
+    }
+
+    grouping constraint {
+        description "The constraints (how) provide more guidelines on how the intent
+                will have to be realized.";
+    }
+
+    grouping include-node {
+      uses constraint;
+
+      leaf include-selector {
+        type string;
+      }
+
+      description "Constraint that requires a specific node to be included
+          in a path computation.";
+    }
+
+    grouping exclude-node {
+      uses constraint;
+
+      leaf exclude-selector {
+        type string;
+      }
+
+      description "Constraint that requires a specific node to be excluded
+          from a path computation.";
+    }
+
+    grouping bandwidth-constraint {
+      uses constraint;
+
+      leaf bandwidth {
+        type string;
+      }
+
+      description "Constraint that requires the specified bandwidth.";
+    }
+
+    grouping classification-constraint {
+          uses constraint;
+
+          leaf classifier {
+            type string;
+          }
+
+          description "Constraint that requires the specified classifier.";
+    }
+
+    grouping protection-constraint {
+      uses constraint;
+
+      leaf is-protected {
+        type boolean;
+      }
+
+      description "Constraint that requires an end-to-end connectivity to be
+          protected by providing redundant paths. It reduces the risk of connectivity
+          failure due to a single link or port down event on a forwarding device.";
+    }
+
+    typedef failover-type {
+        type enumeration {
+            enum fast-reroute {
+                value 1;
+                description "Uses failure detection feature in hardware forwarding
+                    device through OF group table features.";
+            }
+            enum slow-reroute {
+                value 2;
+                description "Uses disjoint path calculation algorithms to provide
+                    alternate end-to-end routes.";
+            }
+        }
+    }
+
+    grouping failover-constraint {
+      uses constraint;
+      leaf failover-selector {
+        type failover-type;
+      }
+      description "Constraint that specifies the type of failover implementation.";
+    }
+
+    // Constraint that specify QoS Mapping attributes.
+    // Contains a leaf node for QoS Constraint name.
+    grouping qos-constraint {
+      uses constraint;
+      leaf qos-name {
+        type string;
+      }
+      description "Constraint that specifies the type of priority implementation.";
+    }
+}
